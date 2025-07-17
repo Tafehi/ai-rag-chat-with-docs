@@ -3,10 +3,10 @@ import boto3
 from langchain_aws import BedrockLLM as LangchainBedrock
 from dotenv import load_dotenv
 
-class Bedrock:
+class BedrockLLM:
     def __init__(self):
         load_dotenv()
-        self._model = os.getenv("MODEL_LLM")
+        self._model = os.getenv("AWS_LLM_MODEL")
         self._access_key = os.getenv("AWS_ACCESS_KEY_ID")
         self._secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
         self._session_token = os.getenv("AWS_SESSION_TOKEN") 
@@ -39,6 +39,5 @@ class Bedrock:
                     "topP": 0.2,
                 },
             )
-
         except Exception as e:
             raise RuntimeError(f"Failed to initialize Bedrock LLM: {e}")

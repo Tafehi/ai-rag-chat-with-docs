@@ -1,12 +1,30 @@
+from fileinput import filename
+import os
 import streamlit as st
-from model.Bedrock import Bedrock
+from dotenv import load_dotenv
+from model.Bedrock import BedrockLLM
+from utils.Opensearch import OpensearchClient
+from utils.Embadding import TextEmbedding 
+
 
 
 
 if __name__ == "__main__":
-    bedrock = Bedrock()
+    # Initialize Bedrock LLM
+    load_dotenv()
+    bedrock = BedrockLLM()
     llm = bedrock.get_llm()
-    print(f"LLM initialized successfully: {llm}")
+    print("LLM initialized successfully.")
+
+    # Initialize OpenSearch client
+    opensearch_client = OpensearchClient().client
+    print("OpenSearch client initialized successfully.")
+
+    documents_folder = os.getenv("documents_folder")
+    # Initialize embedder
+    embedder = TextEmbedding()
+    docIngestion = embedder.ingest_docs()
+    # print(f"Ingestion '{documents_folder}': {docIngestion[:5]}...")  # Show first few values
 
 
 
@@ -22,7 +40,7 @@ if __name__ == "__main__":
 
 
 # # Initialize the model
-# bedrock = Bedrock()
+# bedrock = BedrockLLM()
 # llm = bedrock.get_llm()
 
 
