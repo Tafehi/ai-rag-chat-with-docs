@@ -16,6 +16,7 @@ This project implements a document-aware chatbot using two powerful LLM models:
      ```python
      RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=50)
      ```
+   - stages related on hoiw indexing works in LLM base RAG applications can be see as in [Fig. 01](./pics/01.png)
 
 2. **Embedding**:
    - Each chunk is embedded using the `nomic-embed-text:latest` model via Ollama.
@@ -25,6 +26,7 @@ This project implements a document-aware chatbot using two powerful LLM models:
    - Embeddings are stored in an AWS-hosted OpenSearch vector database.
    - The index is named: `index-langchain`.
    - A total of 6263 document chunks are indexed.
+   - In [Fig. 02](./pics/02.png) you will find the stage where documents are being pushed to the Opensreach db.
 
 4. **Chatbot Interaction**:
    - The chatbot uses `amazon.titan-text-lite-v1` to process user queries.
