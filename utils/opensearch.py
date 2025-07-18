@@ -16,7 +16,13 @@ class OpensearchClient:
         self._opensearch_password = os.getenv("OPENSEARCH-PASSWORD")
 
         print("Initializing OpenSearch client...")
-        if not all([self._opensearch_host, self._opensearch_username, self._opensearch_password]):
+        if not all(
+            [
+                self._opensearch_host,
+                self._opensearch_username,
+                self._opensearch_password,
+            ]
+        ):
             raise ValueError("Missing OpenSearch configuration in .env")
 
         self.client = OpenSearch(
@@ -25,7 +31,7 @@ class OpensearchClient:
             use_ssl=True,
             verify_certs=True,
             ssl_show_warn=False,
-            connection_class=RequestsHttpConnection
+            connection_class=RequestsHttpConnection,
         )
         # Check if the index exists
         if self.client.indices.exists(index=self._index_name):
@@ -36,10 +42,11 @@ class OpensearchClient:
                 self.client.indices.delete(index=self._index_name)
                 print(f"Index '{self._index_name}' was empty and has been deleted.")
             else:
-                print(f"Index '{self._index_name}' exists and contains {doc_count} documents. Skipping deletion.")
+                print(
+                    f"Index '{self._index_name}' exists and contains {doc_count} documents. Skipping deletion."
+                )
         else:
             print(f"Index '{self._index_name}' does not exist.")
-
 
         # Test the connection
         try:
@@ -48,5 +55,3 @@ class OpensearchClient:
             # print(info)
         except Exception as e:
             print("Connection failed:", e)
-
-

@@ -14,8 +14,12 @@ st.sidebar.title("🔧 Settings")
 # Embedding model selector
 embedding_model = st.sidebar.selectbox(
     "Embedding Model",
-    options=["nomic-embed-text:latest", "other-model-1", "other-model-2"],
-    index=0
+    options=[
+        "nomic-embed-text:latest", 
+        "mxbai-embed-large:latest", 
+        "bge-m3:latest"
+    ],
+    index=0,
 )
 
 # Chatbot model selector
@@ -24,9 +28,9 @@ chatbot_model = st.sidebar.selectbox(
     options=[
         "mistral.mixtral-8x7b-instruct-v0:1",
         "amazon.titan-text-lite-v1",
-        "amazon.titan-text-express-v1"  # this one supports system messages
+        "amazon.titan-text-express-v1",  # this one supports system messages
     ],
-    index=0
+    index=0,
 )
 
 
