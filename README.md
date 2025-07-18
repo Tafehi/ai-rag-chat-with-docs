@@ -1,7 +1,10 @@
 
-# LLM-Powered Document Chatbot with OpenSearch
+# LLM-Powered RAG Document Chatbot with OpenSearch
 
-This project implements a document-aware chatbot using two powerful LLM models:
+This project implements a RAG model which can answer the questions usign chatbot. The question are related to the documents which are converted as embadded vectore using `nomic-embed-text:latest` (via Ollama) and stored in ther `aws Opensearch vector db` and the chatbot is created using `amazon.titan-text-lite-v1` (via AWS Bedrock). This chain of events is illustrated in below:
+    <p align="center">
+      <img src="./pics/00.png" alt="Fig. 01 - RAG Chatbot" width="600" height="400"/>
+    </p>
 
 - **Embedding Model**: `nomic-embed-text:latest` (via Ollama) for generating vector embeddings of documents.
 - **Chatbot Model**: `amazon.titan-text-lite-v1` (via AWS Bedrock) for answering user queries based on indexed documents.
