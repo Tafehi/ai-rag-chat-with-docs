@@ -26,7 +26,7 @@ class OpensearchManager:
                 "mappings": {
                     "properties": {
                         "text": {"type": "text"},
-                        "embedding": {
+                        "vector_field": {
                             "type": "knn_vector",
                             "dimension": self._embedding_dimension,
                         }

@@ -1,82 +1,73 @@
-from fileinput import filename
-import os
 import streamlit as st
 from dotenv import load_dotenv
-from model.Bedrock import BedrockLLM
-from utils.Opensearch import OpensearchClient
-from utils.Embadding import TextEmbedding 
 from backend.core import Chatbot
+from utils.Opensearch import OpensearchClient
+from utils.Embadding import TextEmbedding
+import os
+
+# Load environment variables
+load_dotenv()
+
+# Sidebar controls
+st.sidebar.title("🔧 Settings")
+
+# Embedding model selector
+embedding_model = st.sidebar.selectbox(
+    "Embedding Model",
+    options=["nomic-embed-text:latest", "other-model-1", "other-model-2"],
+    index=0
+)
+
+# Chatbot model selector
+chatbot_model = st.sidebar.selectbox(
+    "Chatbot LLM Model",
+    options=[
+        "mistral.mixtral-8x7b-instruct-v0:1",
+        "amazon.titan-text-lite-v1",
+        "amazon.titan-text-express-v1"  # this one supports system messages
+    ],
+    index=0
+)
 
 
+# Button to update vector store
+if st.sidebar.button("🔄 Update Vector Store"):
+    st.sidebar.info("Updating vector store...")
+    embedder = TextEmbedding(model=embedding_model)
+    embedder.ingest_docs()
+    st.sidebar.success("Vector store updated!")
 
-if __name__ == "__main__":
+# Main UI
+st.title("📚 RAG Chatbot with AWS Bedrock + OpenSearch")
 
-    # Initialize Bedrock LLM
-    load_dotenv()
-    bedrock = BedrockLLM()
-    llm = bedrock.get_llm()
-    print("LLM initialized successfully.")
+# Initialize OpenSearch client
+opensearch_client = OpensearchClient().client
+index_name = os.getenv("OPENSEARCH-INDEX-NAME")
 
-    # Initialize OpenSearch client
-    opensearch_client = OpensearchClient().client
-    print("OpenSearch client initialized successfully.")
+# Check if index exists
+if not opensearch_client.indices.exists(index=index_name):
+    st.info(f"Index '{index_name}' does not exist. Ingesting documents...")
+    embedder = TextEmbedding(model=embedding_model)
+    embedder.ingest_docs()
+    st.success("Documents ingested and indexed successfully.")
+else:
+    st.info(f"Index '{index_name}' already exists. Skipping ingestion.")
 
-    documents_folder = os.getenv("documents_folder")
-    # Initialize embedder
-    embedder = TextEmbedding()
-    docIngestion = embedder.ingest_docs()
-    print("Documents ingested and indexed successfully.")
-    chatbot = Chatbot()
-    query = "What is the purpose of langchain?"
-    answer = chatbot.get_chatbot(query)
-    print(f"Query: {query}\nAnswer: {answer}")
+# Initialize chatbot with selected model
+chatbot = Chatbot()
+chatbot._embedding_model.model = embedding_model
+chatbot.chat_model = chatbot_model  # You may need to pass this into BedrockLLM
 
-    # print(f"Ingestion '{documents_folder}': {docIngestion[:5]}...")  # Show first few values
+# Query input
+query = st.text_input("Ask a question about your documents:")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Initialize the model
-# bedrock = BedrockLLM()
-# llm = bedrock.get_llm()
-
-
-# Streamlit app configuration
-# st.set_page_config(page_title="Chat with Bedrock", layout="centered")
-# st.title("💬 Chat with Bedrock Model")
-
-# # Initialize session state for chat history
-# if "messages" not in st.session_state:
-#     st.session_state.messages = []
-
-# # Display chat history
-# for msg in st.session_state.messages:
-#     with st.chat_message(msg["role"]):
-#         st.markdown(msg["content"])
-
-# # Input box for user message
-# user_input = st.chat_input("Type your message here...")
-
-# if user_input:
-#     # Add user message to chat history
-#     st.session_state.messages.append({"role": "user", "content": user_input})
-#     with st.chat_message("user"):
-#         st.markdown(user_input)
-
-#     # Get model response
-#     response = llm(user_input)
-
-#     # Add model response to chat history
-#     st.session_state.messages.append({"role": "assistant", "content": response})
-#     with st.chat_message("assistant"):
-#         st.markdown(response)
+if query:
+    with st.spinner("Thinking..."):
+        try:
+            response = chatbot.get_chatbot(query)
+            st.markdown(f"**Answer:** {response['result']}")
+            with st.expander("🔍 Source Documents"):
+                for doc in response["source_documents"]:
+                    st.markdown(f"- {doc.metadata.get('source', 'Unknown')}")
+        except Exception as e:
+            st.error(f"Error: {e}")

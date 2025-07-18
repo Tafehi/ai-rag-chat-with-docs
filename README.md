@@ -1,13 +1,13 @@
 
 # LLM-Powered RAG Document Chatbot with OpenSearch
 
-This project implements a RAG model which can answer the questions usign chatbot. The question are related to the documents which are converted as embadded vectore using `nomic-embed-text:latest` (via Ollama) and stored in ther `aws Opensearch vector db` and the chatbot is created using `amazon.titan-text-lite-v1` (via AWS Bedrock). This chain of events is illustrated in below:
+This project implements a RAG model which can answer the questions usign chatbot. The question are related to the documents which are converted as embadded vectore using `nomic-embed-text:latest` (via Ollama) and stored in ther `aws Opensearch vector db` and the chatbot is created using `mistral.mixtral-8x7b-instruct-v0:1` (via AWS Bedrock). This chain of events is illustrated in below:
     <p align="center">
       <img src="./pics/00.png" alt="Fig. 01 - RAG Chatbot" width="600" height="400"/>
     </p>
 
 - **Embedding Model**: `nomic-embed-text:latest` (via Ollama) for generating vector embeddings of documents.
-- **Chatbot Model**: `amazon.titan-text-lite-v1` (via AWS Bedrock) for answering user queries based on indexed documents.
+- **Chatbot Model**: `mistral.mixtral-8x7b-instruct-v0:1` (via AWS Bedrock) for answering user queries based on indexed documents.
 
 ---
 
@@ -38,8 +38,12 @@ This project implements a RAG model which can answer the questions usign chatbot
     </p>
 
 4. **Chatbot Interaction**:
-   - The chatbot uses `amazon.titan-text-lite-v1` to process user queries.
+   - The chatbot uses `mistral.mixtral-8x7b-instruct-v0:1` to process user queries.
    - It retrieves relevant documents from OpenSearch and generates answers based on the indexed content.
+   - The final results from `streamlit` can be seen as in below:
+       <p align="center">
+      <img src="./pics/04.png" alt="Fig. 04 - Chabot fronend using Streamlit" width="700" height="500"/>
+    </p>
 
 ---
 
@@ -55,7 +59,7 @@ AWS_REGION=""
 
 # LLM configuration
 OLLAMA_LLM_MODEL="nomic-embed-text:latest"
-AWS_LLM_MODEL="amazon.titan-text-lite-v1"
+AWS_LLM_MODEL="mistral.mixtral-8x7b-instruct-v0:1"
 
 # OpenSearch configuration
 OPENSEARCH-HOST=""
@@ -72,24 +76,26 @@ EMBEDDING_DIMENSION=768
 
 ```bash
 .
-├── chatbot.py
-├── documents
-│   └── latest
-│       ├── agents
-│       ├── model
-├── model
+├── backend/                  # Backend logic
 │   ├── __init__.py
-│   ├── Bedrock.py
-│   └── Ollama.py
-├── pics
-│   ├── 01.png
-│   └── 02.png
-├── requirements.txt
-└── utils
+│   └── core.py              # Possibly core backend functions or API logic
+├── chatbot.py               # Main chatbot interface or entry point
+├── documents/               # Likely for storing or processing documents
+│   └── latest/
+│       ├── agents/          # Possibly agent configurations or logic
+│       ├── model/           # Model-related files or outputs
+├── model/                   # LLM model integrations
+│   ├── __init__.py
+│   ├── Bedrock.py           # AWS Bedrock integration
+│   └── Ollama.py            # Ollama model integration
+├── pics/                    # Image assets
+├── README.md                # Project documentation
+├── requirements.txt         # Python dependencies
+└── utils/                   # Utility modules
     ├── __init__.py
-    ├── Embadding.py
-    ├── Opensearch.py
-    └── Populate.py
+    ├── Embadding.py         # Likely embedding logic (possibly typo: "Embedding")
+    ├── Opensearch.py        # Integration with OpenSearch
+    └── Populate.py          # Data population or ingestion logic
 ```
 
 ## 🚀 Getting Started

@@ -27,10 +27,16 @@ class OpensearchClient:
             ssl_show_warn=False,
             connection_class=RequestsHttpConnection
         )
-        # Delete the index if it exists
+        # Check if the index exists
         if self.client.indices.exists(index=self._index_name):
-            self.client.indices.delete(index=self._index_name)
-            print(f"Index '{self._index_name}' deleted.")
+            # Get document count
+            doc_count = self.client.count(index=self._index_name)["count"]
+
+            if doc_count == 0:
+                self.client.indices.delete(index=self._index_name)
+                print(f"Index '{self._index_name}' was empty and has been deleted.")
+            else:
+                print(f"Index '{self._index_name}' exists and contains {doc_count} documents. Skipping deletion.")
         else:
             print(f"Index '{self._index_name}' does not exist.")
 

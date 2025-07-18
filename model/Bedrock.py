@@ -30,11 +30,10 @@ class BedrockLLM:
 
             print("Bedrock model is selected.")
             print(f"Using Bedrock model: {self._model}")
-            return ChatBedrockConverse(
+            return  LangchainBedrock(
                     model_id=self._model,
-                    # temperature=...,
-                    # max_tokens=...,
-                    # other params...
+                    client=bedrock_client,
                 )
+
         except Exception as e:
             raise RuntimeError(f"Failed to initialize Bedrock LLM: {e}")
