@@ -16,7 +16,10 @@ This project implements a document-aware chatbot using two powerful LLM models:
      ```python
      RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=50)
      ```
-   - stages related on hoiw indexing works in LLM base RAG applications can be see as in [Fig. 01](./pics/01.png)
+  - Stages related to how indexing works in LLM-based RAG applications can be seen as in the figure below:
+    <p align="center">
+      <img src="./pics/01.png" alt="Fig. 01 - Indexing in RAG" width="300" height="200"/>
+    </p>
 
 2. **Embedding**:
    - Each chunk is embedded using the `nomic-embed-text:latest` model via Ollama.
