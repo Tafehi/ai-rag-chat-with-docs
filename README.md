@@ -30,7 +30,7 @@ This project implements a RAG model which can answer the questions usign chatbot
 
 3. **Indexing with OpenSearch**:
    - Embeddings are stored in an AWS-hosted OpenSearch vector database.
-   - The index is named: `index-langchain`.
+   - The index is named: `langchain-index`.
    - A total of 6263 document chunks are indexed.
    - As illustrated in figure below here you find the stage where documents are being pushed to the Opensreach db.
     <p align="center">
@@ -61,7 +61,7 @@ AWS_LLM_MODEL="amazon.titan-text-lite-v1"
 OPENSEARCH-HOST=""
 OPENSEARCH-USERNAME=""
 OPENSEARCH-PASSWORD=""
-OPENSEARCH-INDEX-NAME="index-langchain"
+OPENSEARCH-INDEX-NAME="langchain-index"
 
 # Define index and folder
 documents_folder="./documents/latest/"
