@@ -42,7 +42,7 @@ This project implements a RAG model which can answer the questions usign chatbot
    - It retrieves relevant documents from OpenSearch and generates answers based on the indexed content.
    - The final results from `streamlit` can be seen as in below:
        <p align="center">
-      <img src="./pics/04.png" alt="Fig. 04 - Fronend of chatbot using Streamlit" width="700" height="500"/>
+      <img src="./pics/05.png" alt="Fig. 04 - Fronend of chatbot using Streamlit" width="700" height="500"/>
     </p>
 
 ---
