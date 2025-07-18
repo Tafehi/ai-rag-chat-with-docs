@@ -5,11 +5,12 @@ from dotenv import load_dotenv
 from model.Bedrock import BedrockLLM
 from utils.Opensearch import OpensearchClient
 from utils.Embadding import TextEmbedding 
-
+from backend.core import Chatbot
 
 
 
 if __name__ == "__main__":
+
     # Initialize Bedrock LLM
     load_dotenv()
     bedrock = BedrockLLM()
@@ -24,6 +25,12 @@ if __name__ == "__main__":
     # Initialize embedder
     embedder = TextEmbedding()
     docIngestion = embedder.ingest_docs()
+    print("Documents ingested and indexed successfully.")
+    chatbot = Chatbot()
+    query = "What is the purpose of langchain?"
+    answer = chatbot.get_chatbot(query)
+    print(f"Query: {query}\nAnswer: {answer}")
+
     # print(f"Ingestion '{documents_folder}': {docIngestion[:5]}...")  # Show first few values
 
 
