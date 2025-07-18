@@ -29,7 +29,10 @@ This project implements a document-aware chatbot using two powerful LLM models:
    - Embeddings are stored in an AWS-hosted OpenSearch vector database.
    - The index is named: `index-langchain`.
    - A total of 6263 document chunks are indexed.
-   - In [Fig. 02](./pics/02.png) you will find the stage where documents are being pushed to the Opensreach db.
+   - As illustrated in figure below here you find the stage where documents are being pushed to the Opensreach db.
+    <p align="center">
+      <img src="./pics/02.png" alt="Fig. 02 - Embadded doc uploading to Opeansearch" width="600" height="400"/>
+    </p>
 
 4. **Chatbot Interaction**:
    - The chatbot uses `amazon.titan-text-lite-v1` to process user queries.
